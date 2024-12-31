@@ -5,7 +5,7 @@ function App() {
   return (
     <div className='App'>
       <Header />
-      <div style={{ paddingTop: 64 }}>
+      <div>
         <Outlet />
       </div>
     </div>
