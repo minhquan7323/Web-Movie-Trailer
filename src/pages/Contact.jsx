@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Banner = () => {
+const Contact = () => {
     return (
         <div>
-            Banner
+            Contact
         </div>
     )
 }
 
-export default Banner
+export default Contact
