@@ -33,7 +33,7 @@ const Header = () => {
                 p="5px 10px"
                 shadow={isScrolled ? '0 0 10px 1px rgba(0, 0, 0, 0.2)' : 'none'}
                 transition="background-color 0.3s ease, box-shadow 0.3s ease"
-                zIndex="100"
+                zIndex="2000"
             >
 
                 <Box display="flex" alignItems="center">

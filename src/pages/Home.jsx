@@ -1,6 +1,7 @@
 import Banner from '../components/Banner'
 import MovieList from '../components/MovieList'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Home = () => {
     const [moviePopular, setMoviePopular] = useState([])
@@ -8,44 +9,37 @@ const Home = () => {
     const [movieUpComing, setMovieUpComing] = useState([])
     const [movieNowPlaying, setMovieNowPlaying] = useState([])
 
-    const url1 = 'https://api.themoviedb.org/3/movie/popular?language=en?page=1'
-    const url2 = 'https://api.themoviedb.org/3/movie/top_rated?language=en?page=1'
+    const url1 = 'https://api.themoviedb.org/3/movie/popular?language=en?page=5'
+    const url2 = 'https://api.themoviedb.org/3/movie/top_rated?language=en?page=8'
     const url3 = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1'
-    const url4 = 'https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1'
+    const url4 = 'https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=8'
 
     useEffect(() => {
         const fetchMovie = async () => {
             const options = {
-                method: 'GET',
                 headers: {
                     accept: 'application/json',
                     Authorization: `Bearer ${import.meta.env.VITE_API_TMDB_KEY}`
                 }
             }
-            const [res1, res2, res3, res4] = await Promise.all([
-                fetch(url1, options),
-                fetch(url2, options),
-                fetch(url3, options),
-                fetch(url4, options)
-            ])
-            const data1 = await res1.json()
-            const data2 = await res2.json()
-            const data3 = await res3.json()
-            const data4 = await res4.json()
+            const res1 = await axios.get(url1, options)
+            const res2 = await axios.get(url2, options)
+            const res3 = await axios.get(url3, options)
+            const res4 = await axios.get(url4, options)
 
-            setMoviePopular(data1.results)
-            setMovieTopRate(data2.results)
-            setMovieUpComing(data3.results)
-            setMovieNowPlaying(data4.results)
+            setMoviePopular(res1.data.results)
+            setMovieTopRate(res2.data.results)
+            setMovieUpComing(res3.data.results)
+            setMovieNowPlaying(res4.data.results)
         }
         fetchMovie()
     }, [])
     return (
         <>
-            <Banner data={movieTopRate.slice(12, 20)} />
-            <MovieList title={'Now Playing'} data={movieNowPlaying} />
+            <Banner data={moviePopular.slice(12, 20)} />
             <MovieList title={'Popular'} data={moviePopular} />
             <MovieList title={'Top Rate'} data={movieTopRate} />
+            <MovieList title={'Now Playing'} data={movieNowPlaying} />
             <MovieList title={'Upcoming'} data={movieUpComing} />
 
         </>
