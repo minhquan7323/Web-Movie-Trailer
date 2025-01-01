@@ -34,9 +34,6 @@ const MovieSearch = () => {
         }
     }, [query])
 
-    const handleSelectMovie = (item) => {
-
-    }
     return (
         <VStack display="flex" alignItems="left" justifyContent="space-between" p="70px 10px 10px 10px" zIndex="0">
             <Heading size="xl" pl={2}>
