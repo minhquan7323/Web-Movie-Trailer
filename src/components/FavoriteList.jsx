@@ -41,7 +41,7 @@ const FavoriteList = () => {
                     </Grid>
                 ) : (
                     <Heading size="lg" display='flex' justifyContent='center' alignItems='center' h='70vh'>
-                        No movies found
+                        No movies in the list
                     </Heading>
                 )}
                 {selectedItem && (
