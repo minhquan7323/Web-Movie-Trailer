@@ -2,7 +2,6 @@ import Banner from '../components/Banner'
 import MovieList from '../components/MovieList'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import MovieSearch from '../components/MovieSearch'
 
 const Home = () => {
     const [moviePopular, setMoviePopular] = useState([])

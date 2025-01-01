@@ -1,5 +1,5 @@
 import { Heading, HStack, Image, useDisclosure, VStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import MovieModal from './MovieModal'
@@ -31,7 +31,6 @@ const MovieList = ({ title, data }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedItem, setSelectedItem] = useState(null)
     const finalRef = React.useRef(null)
-
     const handleSelectMovie = (item) => {
         setSelectedItem(item)
         onOpen()

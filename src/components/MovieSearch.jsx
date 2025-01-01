@@ -35,12 +35,11 @@ const MovieSearch = () => {
     }, [query])
 
     const handleSelectMovie = (item) => {
-        setSelectedItem(item)
-        onOpen()
+
     }
     return (
         <VStack display="flex" alignItems="left" justifyContent="space-between" p="70px 10px 10px 10px" zIndex="0">
-            <Heading size="xl" paddingLeft="10px">
+            <Heading size="xl" pl={2}>
                 Movie Search Results
             </Heading>
             {movieSearch.length > 0 ? (
@@ -50,7 +49,10 @@ const MovieSearch = () => {
                             <HStack key={item.id} alignItems="center" justify="center" p={2}>
                                 <Image
                                     cursor="pointer"
-                                    onClick={() => handleSelectMovie(item)}
+                                    onClick={() => {
+                                        setSelectedItem(item)
+                                        onOpen()
+                                    }}
                                     w="180px"
                                     src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                     alt={item.title}

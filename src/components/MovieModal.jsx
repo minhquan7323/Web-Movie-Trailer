@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Box, Button, ButtonGroup, Divider, Grid, Heading, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Stack, Text, Tooltip } from '@chakra-ui/react'
 import axios from 'axios'
+import { GlobalContext } from '../context/GlobalProvider'
 
 const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalRef }) => {
     const [trailerKey, setTrailerKey] = useState('')
     const [movieSimilar, setMovieSimilar] = useState([])
     const [currentSelectedItem, setCurrentSelectedItem] = useState(initialSelectedItem)
     const [videoPlaying, setVideoPlaying] = useState(false)
+    const { addMovieToFavoriteList, removeMovieFromFavoriteList, favoriteList } = useContext(GlobalContext)
+
+    let storeFavoriteMovie = favoriteList.find(o => o.id === currentSelectedItem.id)
+
+    const favoriteListDisabled = storeFavoriteMovie ? true : false
 
     useEffect(() => {
         if (isOpen) {
@@ -125,18 +131,32 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                                             </Button>
                                         </Tooltip>
                                     )}
-                                    <Tooltip label="Add to Favorite" placement="top">
-                                        <Button variant="outline" colorScheme="teal" borderRadius="50%" w="40px">
-                                            <i className="fa-solid fa-plus" style={{ fontSize: '1.5rem' }}></i>
-                                        </Button>
-                                    </Tooltip>
+                                    {favoriteListDisabled ? (
+                                        <Tooltip label="Remove from Favorite" placement="top">
+                                            <Button variant="solid" colorScheme='teal' borderRadius="50%" w="40px"
+                                                onClick={() => removeMovieFromFavoriteList(currentSelectedItem.id)}
+                                            >
+                                                <i className="fas fa-heart" style={{ fontSize: '1.5rem' }}></i>
+                                            </Button>
+                                        </Tooltip>
+                                    ) : (
+                                        <Tooltip label="Add to Favorite" placement="top">
+                                            <Button variant="outline" colorScheme="teal" borderRadius="50%" w="40px"
+                                                onClick={() => addMovieToFavoriteList(currentSelectedItem)}
+                                            >
+                                                <i className="far fa-heart" style={{ fontSize: '1.5rem' }}></i>
+                                            </Button>
+                                        </Tooltip>
+                                    )}
                                 </ButtonGroup>
                             </Box>
-                            <Box>
-                                <Button variant="outline" colorScheme="teal" onClick={onClose}>
-                                    Close
-                                </Button>
-                            </Box>
+                            {videoPlaying &&
+                                <Box>
+                                    <Button variant="outline" colorScheme="teal" onClick={onClose}>
+                                        Close
+                                    </Button>
+                                </Box>
+                            }
                         </HStack>
                         <Divider />
                         <Heading size="md" color="white">{currentSelectedItem.title}</Heading>

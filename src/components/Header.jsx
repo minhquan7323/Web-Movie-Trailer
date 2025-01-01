@@ -24,6 +24,7 @@ const Header = () => {
         if (movieSearch.trim()) {
             navigate('/search', { state: { query: movieSearch } })
             setMovieSearch('')
+            onClose()
         } else {
             navigate('/');
         }
@@ -45,29 +46,22 @@ const Header = () => {
             >
 
                 <Box display="flex" alignItems="center">
-                    <Text>
-                        <Button variant='ghost' display={{ base: 'flex', sm: 'none' }} onClick={onOpen} m='7px'>
-                            <HamburgerIcon boxSize={6} color='teal' />
-                        </Button>
-                        <Link to="/">
-                            <Text
-                                display={{ base: 'none', sm: 'flex' }}
-                                fontSize='4xl' color='teal'
-                                fontWeight='bold'
-                                textTransform='uppercase' px={4}
-                            >
-                                Movie
-                            </Text>
-                        </Link>
-                    </Text>
-                    <Link to="/about">
-                        <Text _hover={{ textDecoration: "none" }} display={{ base: 'none', sm: 'flex' }} px={4} >
-                            About
+                    <Button variant='ghost' display={{ base: 'flex', sm: 'none' }} onClick={onOpen} m='7px'>
+                        <HamburgerIcon boxSize={6} color='teal' />
+                    </Button>
+                    <Link to="/">
+                        <Text
+                            display={{ base: 'none', sm: 'flex' }}
+                            fontSize='4xl' color='teal'
+                            fontWeight='bold'
+                            textTransform='uppercase' px={2}
+                        >
+                            Movie
                         </Text>
                     </Link>
-                    <Link to="/contact">
+                    <Link to="/favorite">
                         <Text _hover={{ textDecoration: "none" }} display={{ base: 'none', sm: 'flex' }} px={4} >
-                            Contact
+                            Favorite List
                         </Text>
                     </Link>
                 </Box>
@@ -109,16 +103,19 @@ const Header = () => {
 
                     <DrawerBody>
                         <Box display="flex" alignItems="center" py={10}>
-                            <Input placeholder='Search' mr={2} color='white' />
-                            <Button
-                                colorScheme='teal'
-                                size='md'
-                                onClick={
-                                    () => {
-                                        onClose()
+                            <Input
+                                placeholder='Search'
+                                mr={2}
+                                color='white'
+                                value={movieSearch}
+                                onChange={(e) => setMovieSearch(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        onSearch()
                                     }
-                                }
-                            >
+                                }}
+                            />
+                            <Button colorScheme='teal' size='md' onClick={onSearch} >
                                 <i className="fas fa-magnifying-glass"></i>
                             </Button>
                         </Box>
@@ -128,16 +125,9 @@ const Header = () => {
                         <VStack as="ul" spacing={4} color="white" align="start" w="full" p={10}>
                             <List spacing={4} styleType="disc">
                                 <ListItem>
-                                    <Link to="/about" onClick={onClose}>
+                                    <Link to="/favorite" onClick={onClose}>
                                         <Text _hover={{ textDecoration: "none" }} px={4} >
-                                            About
-                                        </Text>
-                                    </Link>
-                                </ListItem>
-                                <ListItem>
-                                    <Link to="/contact" onClick={onClose}>
-                                        <Text _hover={{ textDecoration: "none" }} px={4} >
-                                            Contact
+                                            Favorite List
                                         </Text>
                                     </Link>
                                 </ListItem>

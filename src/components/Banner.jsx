@@ -29,7 +29,7 @@ const Banner = ({ data }) => {
                 partialVisible
                 autoPlay
                 draggable={false}
-                autoPlaySpeed={4000}
+                autoPlaySpeed={3000}
                 showDots
             >
                 {
@@ -90,7 +90,7 @@ const Banner = ({ data }) => {
                         </HStack>
                     ))
                 }
-            </Carousel >
+            </Carousel>
             {selectedItem && (
                 <MovieModal
                     isOpen={isOpen}
