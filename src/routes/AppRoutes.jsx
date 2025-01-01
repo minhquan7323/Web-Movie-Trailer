@@ -4,6 +4,7 @@ import Home from "../pages/Home"
 import App from '../App'
 import MovieSearch from '../components/MovieSearch'
 import FavoriteList from '../components/FavoriteList'
+import MovieGenre from '../components/MovieGenre'
 
 const AppRoutes = () => {
 
@@ -12,6 +13,7 @@ const AppRoutes = () => {
             <Route path="/" element={<App />}>
                 <Route index element={<Home />} />
                 <Route path='/favorite' element={<FavoriteList />} />
+                <Route path='/genre' element={<MovieGenre />} />
                 <Route path='/search' element={<MovieSearch />} />
             </Route>
         </Routes>

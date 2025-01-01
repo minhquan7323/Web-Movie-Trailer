@@ -83,7 +83,8 @@ const Banner = ({ data }) => {
                             <Box display={{ base: 'none', md: 'flex' }}>
                                 <Image
                                     zIndex="2"
-                                    src={`${import.meta.env.VITE_URL_IMG}${item.backdrop_path}`}
+                                    w='250px'
+                                    src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                     alt={item.title}
                                 />
                             </Box>

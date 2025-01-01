@@ -16,7 +16,13 @@ const FavoriteList = () => {
                     Favorite List
                 </Heading>
                 {favoriteList.length > 0 ? (
-                    <Grid templateColumns="repeat(6, 1fr)" gap={4}>
+                    <Grid
+                        templateColumns={{
+                            base: "repeat(3, 1fr)",
+                            md: "repeat(4, 1fr)",
+                            lg: "repeat(6, 1fr)"
+                        }}
+                    >
                         {favoriteList.map((item) => (
                             item.poster_path && item.backdrop_path && (
                                 <HStack key={item.id} alignItems="center" justify="center" p={2}>
