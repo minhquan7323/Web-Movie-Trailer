@@ -2,6 +2,7 @@ import Banner from '../components/Banner'
 import MovieList from '../components/MovieList'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import MovieSearch from '../components/MovieSearch'
 
 const Home = () => {
     const [moviePopular, setMoviePopular] = useState([])
@@ -9,12 +10,11 @@ const Home = () => {
     const [movieUpComing, setMovieUpComing] = useState([])
     const [movieNowPlaying, setMovieNowPlaying] = useState([])
 
-    const url1 = 'https://api.themoviedb.org/3/movie/popular?language=en?page=5'
-    const url2 = 'https://api.themoviedb.org/3/movie/top_rated?language=en?page=8'
-    const url3 = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1'
-    const url4 = 'https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=8'
-
     useEffect(() => {
+        const urlPopular = 'https://api.themoviedb.org/3/movie/popular?language=en?page=5'
+        const urlTopRated = 'https://api.themoviedb.org/3/movie/top_rated?language=en?page=8'
+        const urlNowPlaying = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=2'
+        const urlUpcoming = 'https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=8'
         const fetchMovie = async () => {
             const options = {
                 headers: {
@@ -22,10 +22,10 @@ const Home = () => {
                     Authorization: `Bearer ${import.meta.env.VITE_API_TMDB_KEY}`
                 }
             }
-            const res1 = await axios.get(url1, options)
-            const res2 = await axios.get(url2, options)
-            const res3 = await axios.get(url3, options)
-            const res4 = await axios.get(url4, options)
+            const res1 = await axios.get(urlPopular, options)
+            const res2 = await axios.get(urlTopRated, options)
+            const res3 = await axios.get(urlNowPlaying, options)
+            const res4 = await axios.get(urlUpcoming, options)
 
             setMoviePopular(res1.data.results)
             setMovieTopRate(res2.data.results)
@@ -34,6 +34,7 @@ const Home = () => {
         }
         fetchMovie()
     }, [])
+
     return (
         <>
             <Banner data={moviePopular.slice(12, 20)} />
@@ -41,7 +42,6 @@ const Home = () => {
             <MovieList title={'Top Rate'} data={movieTopRate} />
             <MovieList title={'Now Playing'} data={movieNowPlaying} />
             <MovieList title={'Upcoming'} data={movieUpComing} />
-
         </>
     )
 }

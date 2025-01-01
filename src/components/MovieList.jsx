@@ -45,22 +45,25 @@ const MovieList = ({ title, data }) => {
             <Carousel responsive={responsive} infinite arrows centerMode={false} partialVisible draggable={false}>
                 {data.length > 0 &&
                     data.map((item) => (
-                        <HStack key={item.id} alignItems="center" justify="center" p={2}>
-                            <Image
-                                cursor="pointer"
-                                objectFit="cover"
-                                onClick={() => handleSelectMovie(item)}
-                                w="180px"
-                                src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
-                                alt={item.title}
-                                borderRadius="md"
-                                _hover={{
-                                    transform: 'scale(1.05)'
-                                }}
-                                transition="transform 0.2s ease-in-out"
-                            />
-                        </HStack>
-                    ))}
+                        item.poster_path && item.backdrop_path && (
+                            <HStack key={item.id} alignItems="center" justify="center" p={2}>
+                                <Image
+                                    cursor="pointer"
+                                    objectFit="cover"
+                                    onClick={() => handleSelectMovie(item)}
+                                    w="180px"
+                                    src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
+                                    alt={item.title}
+                                    borderRadius="md"
+                                    _hover={{
+                                        transform: 'scale(1.05)'
+                                    }}
+                                    transition="transform 0.2s ease-in-out"
+                                />
+                            </HStack>
+                        )
+                    ))
+                }
             </Carousel>
 
             {selectedItem && (

@@ -1,18 +1,17 @@
-import { Box, Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, HStack, Input, List, ListItem, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast, VStack } from '@chakra-ui/react'
+import { Box, Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Input, List, ListItem, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+
 const Header = () => {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const [isScrolled, setIsScrolled] = useState(false)
+    const [movieSearch, setMovieSearch] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 0) {
-                setIsScrolled(true)
-            } else {
-                setIsScrolled(false)
-            }
+            setIsScrolled(window.scrollY > 0)
         }
 
         window.addEventListener('scroll', handleScroll)
@@ -20,6 +19,15 @@ const Header = () => {
             window.removeEventListener('scroll', handleScroll)
         }
     }, [])
+
+    const onSearch = () => {
+        if (movieSearch.trim()) {
+            navigate('/search', { state: { query: movieSearch } })
+            setMovieSearch('')
+        } else {
+            navigate('/');
+        }
+    };
 
     return (
         <>
@@ -31,9 +39,9 @@ const Header = () => {
                 bg={isScrolled ? '#1a202c' : 'linear-gradient(to bottom, rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0))'}
                 w="100%"
                 p="5px 10px"
-                shadow={isScrolled ? '0 0 10px 1px rgba(0, 0, 0, 0.2)' : 'none'}
+                shadow={isScrolled ? '0 0 10px 1px rgba(0, 0, 0, 0.13)' : 'none'}
                 transition="background-color 0.3s ease, box-shadow 0.3s ease"
-                zIndex="2000"
+                zIndex="1001"
             >
 
                 <Box display="flex" alignItems="center">
@@ -71,8 +79,15 @@ const Header = () => {
                         _placeholder={{ opacity: 0.6, color: 'white' }}
                         mr={2}
                         color='white'
+                        value={movieSearch}
+                        onChange={(e) => setMovieSearch(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                onSearch()
+                            }
+                        }}
                     />
-                    <Button colorScheme='teal' size='md'>
+                    <Button colorScheme='teal' size='md' onClick={onSearch}>
                         <i className="fas fa-magnifying-glass"></i>
                     </Button>
                 </Box>
@@ -95,7 +110,15 @@ const Header = () => {
                     <DrawerBody>
                         <Box display="flex" alignItems="center" py={10}>
                             <Input placeholder='Search' mr={2} color='white' />
-                            <Button colorScheme='teal' size='md' onClick={onClose}>
+                            <Button
+                                colorScheme='teal'
+                                size='md'
+                                onClick={
+                                    () => {
+                                        onClose()
+                                    }
+                                }
+                            >
                                 <i className="fas fa-magnifying-glass"></i>
                             </Button>
                         </Box>
@@ -120,9 +143,7 @@ const Header = () => {
                                 </ListItem>
                             </List>
                         </VStack>
-
                     </DrawerBody>
-
                 </DrawerContent>
             </Drawer>
         </>

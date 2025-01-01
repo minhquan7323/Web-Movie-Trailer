@@ -13,10 +13,12 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
             setVideoPlaying(false)
         }
     }, [isOpen])
+
     useEffect(() => {
         if (initialSelectedItem) {
             setCurrentSelectedItem(initialSelectedItem)
             setTrailerKey('')
+            setVideoPlaying(false)
         }
     }, [initialSelectedItem])
 
@@ -70,7 +72,7 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" useInPortal={false} sx={{ zIndex: 3000 }}>
             <ModalOverlay />
             <ModalContent bgColor="#1a202c">
                 <ModalCloseButton color="white" />
@@ -108,19 +110,21 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                         <HStack justifyContent="space-between">
                             <Box>
                                 <ButtonGroup spacing={2}>
-                                    <Tooltip label="Play" placement="top">
-                                        <Button
-                                            variant="solid"
-                                            colorScheme="teal"
-                                            borderRadius="50%"
-                                            w="40px"
-                                            onClick={() => {
-                                                setVideoPlaying(true)
-                                            }}
-                                        >
-                                            <i className="fa-solid fa-play" style={{ fontSize: '1.5rem' }}></i>
-                                        </Button>
-                                    </Tooltip>
+                                    {trailerKey.length > 0 && (
+                                        <Tooltip label="Play" placement="top">
+                                            <Button
+                                                variant="solid"
+                                                colorScheme="teal"
+                                                borderRadius="50%"
+                                                w="40px"
+                                                onClick={() => {
+                                                    setVideoPlaying(true)
+                                                }}
+                                            >
+                                                <i className="fa-solid fa-play" style={{ fontSize: '1.5rem' }}></i>
+                                            </Button>
+                                        </Tooltip>
+                                    )}
                                     <Tooltip label="Add to Favorite" placement="top">
                                         <Button variant="outline" colorScheme="teal" borderRadius="50%" w="40px">
                                             <i className="fa-solid fa-plus" style={{ fontSize: '1.5rem' }}></i>
@@ -137,30 +141,37 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                         <Divider />
                         <Heading size="md" color="white">{currentSelectedItem.title}</Heading>
                         <Text color="whiteAlpha.800">{currentSelectedItem.overview}</Text>
-                        <Divider />
-                        <Heading size="sm" color="white">Similar Movies</Heading>
-                        <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-                            {movieSimilar.map((item) => (
-                                <Image
-                                    key={item.id}
-                                    cursor="pointer"
-                                    objectFit="cover"
-                                    onClick={() => {
-                                        setCurrentSelectedItem(item)
-                                        fetchSimilarMovies(item.id)
-                                        handleClick()
-                                    }}
-                                    w="100%"
-                                    src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
-                                    alt={item.title}
-                                    borderRadius="md"
-                                    _hover={{
-                                        transform: 'scale(1.05)'
-                                    }}
-                                    transition="transform 0.2s ease-in-out"
-                                />
-                            ))}
-                        </Grid>
+                        {movieSimilar.length > 0 && (
+                            <>
+                                <Divider />
+                                <Heading size="sm" color="white">Similar Movies</Heading>
+                                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                                    {movieSimilar.map((item) => (
+                                        item.poster_path && item.backdrop_path && (
+                                            <Image
+                                                key={item.id}
+                                                cursor="pointer"
+                                                objectFit="cover"
+                                                onClick={() => {
+                                                    setCurrentSelectedItem(item)
+                                                    setVideoPlaying(false)
+                                                    fetchSimilarMovies(item.id)
+                                                    handleClick()
+                                                }}
+                                                w="100%"
+                                                src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
+                                                alt={item.title}
+                                                borderRadius="md"
+                                                _hover={{
+                                                    transform: 'scale(1.05)'
+                                                }}
+                                                transition="transform 0.2s ease-in-out"
+                                            />
+                                        )
+                                    ))}
+                                </Grid>
+                            </>
+                        )}
                     </Stack>
                 </ModalBody>
             </ModalContent>
