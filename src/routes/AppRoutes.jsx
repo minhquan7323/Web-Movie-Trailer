@@ -5,6 +5,7 @@ import App from '../App'
 import MovieSearch from '../components/MovieSearch'
 import FavoriteList from '../components/FavoriteList'
 import MovieGenre from '../components/MovieGenre'
+import PageNotFound from '../pages/PageNotFound'
 
 const AppRoutes = () => {
 
@@ -16,6 +17,7 @@ const AppRoutes = () => {
                 <Route path='/genre' element={<MovieGenre />} />
                 <Route path='/search' element={<MovieSearch />} />
             </Route>
+            <Route path="*" element={<PageNotFound />} />
         </Routes>
     )
 }
