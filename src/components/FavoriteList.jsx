@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { GlobalContext } from '../context/GlobalProvider'
-import { Grid, Heading, HStack, Image, useDisclosure, VStack } from '@chakra-ui/react'
+import { Box, Grid, Heading, HStack, Image, useDisclosure, VStack } from '@chakra-ui/react'
 import MovieModal from './MovieModal'
 
 const FavoriteList = () => {
@@ -10,7 +10,7 @@ const FavoriteList = () => {
     const finalRef = React.useRef(null)
 
     return (
-        <>
+        <Box h='100vh'>
             <VStack display="flex" alignItems="left" justifyContent="space-between" p="70px 10px 10px 10px" zIndex="0">
                 <Heading size="xl" pl={2}>
                     Favorite List
@@ -59,7 +59,7 @@ const FavoriteList = () => {
                     />
                 )}
             </VStack>
-        </>
+        </Box>
     )
 }
 
