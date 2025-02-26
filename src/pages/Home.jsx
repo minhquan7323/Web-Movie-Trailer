@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Box, Button, Grid, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
+import { img } from 'framer-motion/client'
 
 const Home = () => {
     const [moviePopular, setMoviePopular] = useState([])
@@ -23,7 +24,6 @@ const Home = () => {
                     Authorization: `Bearer ${import.meta.env.VITE_API_TMDB_KEY}`,
                 },
             }
-
             try {
                 const [genreRes, popularRes, topRatedRes, nowPlayingRes, upcomingRes] = await Promise.all([
                     axios.get('https://api.themoviedb.org/3/genre/movie/list?language=en', options),
