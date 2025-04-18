@@ -1,5 +1,6 @@
 .App {
     min-height: max-content;
+    height: 100vh;
     color: white;
     background-color: #1a202c;
 }

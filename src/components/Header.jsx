@@ -60,13 +60,13 @@ const Header = () => {
                         </Text>
                     </Link>
                     <Link to="/favorite">
-                        <Text _hover={{ textDecoration: "none" }} display={{ base: 'none', sm: 'flex' }} px={4} >
+                        <Text _hover={{ textDecoration: "none" }} display={'flex'} px={4} >
                             Favorite List
                         </Text>
                     </Link>
                 </Box>
 
-                <Box display="flex" alignItems="center">
+                <Box alignItems="center" display={{ base: 'none', sm: 'flex' }}>
                     <Input
                         placeholder='Search'
                         _placeholder={{ opacity: 0.6, color: 'white' }}

@@ -6,7 +6,7 @@ function App() {
   return (
     <div className='App'>
       <Header />
-      <div>
+      <div className='app_container'>
         <Outlet />
       </div>
       {/* <Footer /> */}

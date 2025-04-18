@@ -63,7 +63,7 @@ const Home = () => {
     }
 
     return (
-        <>
+        <Box w='100%'>
             <Banner data={moviePopular.slice(12, 20)} />
             <Box p={5} display="flex" justifyContent="right" alignItems="end">
                 <Menu>
@@ -89,7 +89,7 @@ const Home = () => {
             ))}
             <MovieList title="Top Rate" data={movieTopRate} />
             <MovieList title="Upcoming" data={movieUpComing} />
-        </>
+        </Box>
     )
 }
 
