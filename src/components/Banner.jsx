@@ -5,6 +5,8 @@ import {
     Heading,
     HStack,
     Image,
+    Skeleton,
+    SkeletonText,
     Text,
     VStack,
     useDisclosure
@@ -30,6 +32,8 @@ const Banner = ({ data }) => {
         onOpen()
     }
 
+    const isLoading = data.length === 0
+
     return (
         <>
             <Box overflow="hidden" width="100%">
@@ -43,9 +47,29 @@ const Banner = ({ data }) => {
                     autoPlaySpeed={3000}
                     showDots
                 >
-                    {
-                        data.length > 0 &&
-                        data.map((item) => (
+                    {isLoading
+                        ? Array.from({ length: 2 }).map((_, index) => (
+                            <HStack
+                                key={index}
+                                px={5}
+                                h="400px"
+                                justify="center"
+                                align="center"
+                                bg="gray.800"
+                                w="100%"
+                                position="relative"
+                            >
+                                <VStack spacing={6} align="flex-start" w={{ base: '100%', md: '50%' }} py={40}>
+                                    <Skeleton height="30px" width="60%" />
+                                    <SkeletonText noOfLines={3} spacing="4" width="100%" />
+                                    <Skeleton height="40px" width="120px" borderRadius="md" />
+                                </VStack>
+                                <Box display={{ base: 'none', md: 'flex' }}>
+                                    <Skeleton height="360px" width="250px" borderRadius="md" />
+                                </Box>
+                            </HStack>
+                        ))
+                        : data.map((item) => (
                             <HStack
                                 key={item.id}
                                 display="flex"
@@ -74,10 +98,7 @@ const Banner = ({ data }) => {
                                     <Heading size={{ base: 'sm', sm: 'lg' }}>{item.title}</Heading>
                                     <Text fontSize="14px" color="whiteAlpha.900">{item.overview}</Text>
                                     <HStack spacing={4}>
-                                        <Button
-                                            px={7}
-                                            onClick={() => handleSelectMovie(item)}
-                                        >
+                                        <Button px={7} onClick={() => handleSelectMovie(item)}>
                                             <i className="fa-solid fa-play"></i>
                                             <Text marginLeft={2}>Play</Text>
                                         </Button>
@@ -92,8 +113,7 @@ const Banner = ({ data }) => {
                                     />
                                 </Box>
                             </HStack>
-                        ))
-                    }
+                        ))}
                 </Carousel>
             </Box>
             {selectedItem && (

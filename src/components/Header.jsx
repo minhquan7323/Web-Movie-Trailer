@@ -2,6 +2,7 @@ import { Box, Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerCont
 import { HamburgerIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Logo from './Logo'
 
 const Header = () => {
     const { isOpen, onClose, onOpen } = useDisclosure()
@@ -50,14 +51,15 @@ const Header = () => {
                         <HamburgerIcon boxSize={6} color='teal' />
                     </Button>
                     <Link to="/">
-                        <Text
+                        {/* <Text
                             display={{ base: 'none', sm: 'flex' }}
                             fontSize='4xl' color='teal'
                             fontWeight='bold'
                             textTransform='uppercase' px={2}
                         >
                             Movie
-                        </Text>
+                        </Text> */}
+                        <Logo text="Movie" />
                     </Link>
                     <Link to="/favorite">
                         <Text _hover={{ textDecoration: "none" }} display={'flex'} px={4} >
@@ -80,7 +82,7 @@ const Header = () => {
                             }
                         }}
                     />
-                    <Button colorScheme='teal' size='md' onClick={onSearch}>
+                    <Button colorScheme='teal' size='md' onClick={onSearch} disabled={movieSearch.length == 0}>
                         <i className="fas fa-magnifying-glass"></i>
                     </Button>
                 </Box>
@@ -114,7 +116,7 @@ const Header = () => {
                                     }
                                 }}
                             />
-                            <Button colorScheme='teal' size='md' onClick={onSearch} >
+                            <Button colorScheme='teal' size='md' onClick={onSearch} disabled={movieSearch.length == 0}>
                                 <i className="fas fa-magnifying-glass"></i>
                             </Button>
                         </Box>

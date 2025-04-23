@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, useDisclosure, HStack, Image, Heading, VStack, Box, Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react'
+import { Grid, useDisclosure, HStack, Heading, VStack, Box, Menu, MenuButton, Button, MenuList, MenuItem, Skeleton } from '@chakra-ui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import MovieModal from './MovieModal'
 import { ChevronDownIcon } from '@chakra-ui/icons'
+import MovieCard from './MovieCard'
 
 const MovieGenre = () => {
     const location = useLocation()
@@ -19,6 +20,10 @@ const MovieGenre = () => {
         navigate('/genre', { state: { selectedGenre: genreName, moviesByGenre, genres } })
     }
 
+    const handleSelectMovie = (item) => {
+        setSelectedItem(item)
+        onOpen()
+    }
     return (
         <Box pt='70px'>
             <Box p={5} display={'flex'} justifyContent={'right'} alignItems='end'>
@@ -37,11 +42,15 @@ const MovieGenre = () => {
                     </MenuList>
                 </Menu>
             </Box>
+
             {selectedGenre && (
                 <>
-                    <Heading size="xl" pl={2}>
-                        {selectedGenre} Movies
-                    </Heading>
+                    <Skeleton isLoaded={selectedGenre} height="50px" width="200px" mb={4}>
+                        <Heading size="xl" pl={2}>
+                            {selectedGenre}
+                        </Heading>
+                    </Skeleton>
+
                     <VStack ref={genreRef} display="flex" alignItems="left" justifyContent="space-between" p="10px">
                         {filteredMovies.length > 0 ? (
                             <Grid
@@ -54,21 +63,13 @@ const MovieGenre = () => {
                                 {filteredMovies.map((item) => (
                                     item.poster_path && item.backdrop_path && (
                                         <HStack key={item.id} alignItems="center" justify="center" p={2}>
-                                            <Image
-                                                cursor="pointer"
-                                                onClick={() => {
-                                                    setSelectedItem(item)
-                                                    onOpen()
-                                                }}
-                                                w="180px"
-                                                src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
-                                                alt={item.title}
-                                                borderRadius="md"
-                                                _hover={{
-                                                    transform: 'scale(1.05)'
-                                                }}
-                                                transition="transform 0.2s ease-in-out"
-                                            />
+                                            <Skeleton isLoaded={item.poster_path} width="180px" height="270px">
+                                                <MovieCard
+                                                    src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
+                                                    alt={item.title}
+                                                    onClick={() => handleSelectMovie(item)}
+                                                />
+                                            </Skeleton>
                                         </HStack>
                                     )
                                 ))}
@@ -81,6 +82,7 @@ const MovieGenre = () => {
                     </VStack>
                 </>
             )}
+
             {selectedItem && (
                 <MovieModal
                     isOpen={isOpen}

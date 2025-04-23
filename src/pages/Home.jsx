@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Box, Button, Grid, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
-import { img } from 'framer-motion/client'
+import { motion } from 'framer-motion'
 
 const Home = () => {
     const [moviePopular, setMoviePopular] = useState([])
@@ -64,39 +64,46 @@ const Home = () => {
 
     return (
         <Box w='100%'>
-            <Banner data={moviePopular.slice(12, 20)} />
-            <Box p={5} display="flex" justifyContent="right" alignItems="end">
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Genre
-                    </MenuButton>
-                    <MenuList color="black" zIndex="1001">
-                        <Grid
-                            templateColumns={{
-                                base: 'repeat(2, 1fr)',
-                                sm: 'repeat(3, 1fr)',
-                                md: 'repeat(4, 1fr)',
-                                lg: 'repeat(5, 1fr)',
-                            }}
-                            gap={2}
-                        >
-                            {genres.map((genre) => (
-                                <MenuItem key={genre.id} onClick={() => handleClickGenre(genre.name)}>
-                                    {genre.name}
-                                </MenuItem>
-                            ))}
-                        </Grid>
-                    </MenuList>
-                </Menu>
-            </Box>
+            <motion.div
+                initial={{ y: 0 }}
+                whileInView={{ y: [-50, 0], opacity: [0, 1] }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: false }}
+            >
+                <Banner data={moviePopular.slice(12, 20)} />
+                <Box p={5} display="flex" justifyContent="right" alignItems="end">
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                            Genre
+                        </MenuButton>
+                        <MenuList color="black" zIndex="1001">
+                            <Grid
+                                templateColumns={{
+                                    base: 'repeat(2, 1fr)',
+                                    sm: 'repeat(3, 1fr)',
+                                    md: 'repeat(4, 1fr)',
+                                    lg: 'repeat(5, 1fr)',
+                                }}
+                                gap={2}
+                            >
+                                {genres.map((genre) => (
+                                    <MenuItem key={genre.id} onClick={() => handleClickGenre(genre.name)}>
+                                        {genre.name}
+                                    </MenuItem>
+                                ))}
+                            </Grid>
+                        </MenuList>
+                    </Menu>
+                </Box>
 
-            <MovieList title="Popular" data={moviePopular} />
-            <MovieList title="Now Playing" data={movieNowPlaying} />
-            {genres.slice(5, 9).map((genre) => (
-                <MovieList key={genre.id} title={genre.name} data={moviesByGenre[genre.name] || []} />
-            ))}
-            <MovieList title="Top Rate" data={movieTopRate} />
-            <MovieList title="Upcoming" data={movieUpComing} />
+                <MovieList title="Popular" data={moviePopular} />
+                <MovieList title="Now Playing" data={movieNowPlaying} />
+                {genres.slice(5, 9).map((genre) => (
+                    <MovieList key={genre.id} title={genre.name} data={moviesByGenre[genre.name] || []} />
+                ))}
+                <MovieList title="Top Rate" data={movieTopRate} />
+                <MovieList title="Upcoming" data={movieUpComing} />
+            </motion.div>
         </Box>
     )
 }

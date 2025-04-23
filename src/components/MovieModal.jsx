@@ -1,23 +1,37 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Button, ButtonGroup, Divider, Grid, Heading, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Stack, Text, Tooltip } from '@chakra-ui/react'
+import {
+    Box, Button, ButtonGroup, Divider, Grid, Heading, HStack, Image, Modal,
+    ModalBody, ModalCloseButton, ModalOverlay, Stack, Text, Tooltip,
+    Skeleton, SkeletonText,
+    ModalContent
+} from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import axios from 'axios'
 import { GlobalContext } from '../context/GlobalProvider'
+import MovieCard from './MovieCard'
+
+const MotionModalContent = motion(Box)
+const MotionButton = motion(Button)
 
 const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalRef }) => {
     const [trailerKey, setTrailerKey] = useState('')
     const [movieSimilar, setMovieSimilar] = useState([])
     const [currentSelectedItem, setCurrentSelectedItem] = useState(initialSelectedItem)
     const [videoPlaying, setVideoPlaying] = useState(false)
-    const { addMovieToFavoriteList, removeMovieFromFavoriteList, favoriteList } = useContext(GlobalContext)
+    const [isLoadingTrailer, setIsLoadingTrailer] = useState(true)
+    const [isLoadingSimilar, setIsLoadingSimilar] = useState(true)
 
-    let storeFavoriteMovie = favoriteList.find(o => o.id === currentSelectedItem.id)
+    const {
+        addMovieToFavoriteList,
+        removeMovieFromFavoriteList,
+        favoriteList
+    } = useContext(GlobalContext)
 
-    const favoriteListDisabled = storeFavoriteMovie ? true : false
+    const storeFavoriteMovie = favoriteList.find(o => o.id === currentSelectedItem?.id)
+    const favoriteListDisabled = !!storeFavoriteMovie
 
     useEffect(() => {
-        if (isOpen) {
-            setVideoPlaying(false)
-        }
+        if (isOpen) setVideoPlaying(false)
     }, [isOpen])
 
     useEffect(() => {
@@ -30,6 +44,8 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
 
     useEffect(() => {
         if (currentSelectedItem) {
+            setIsLoadingTrailer(true)
+            setIsLoadingSimilar(true)
             fetchTrailer(currentSelectedItem.id)
             fetchSimilarMovies(currentSelectedItem.id)
         }
@@ -52,6 +68,8 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
             }
         } catch (error) {
             console.error('Error fetching trailer:', error)
+        } finally {
+            setIsLoadingTrailer(false)
         }
     }
 
@@ -68,6 +86,8 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
             setMovieSimilar(response.data.results)
         } catch (error) {
             console.error('Error fetching similar movies:', error)
+        } finally {
+            setIsLoadingSimilar(false)
         }
     }
 
@@ -77,21 +97,31 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
         }
     }
 
+    const handleSelectMovie = (item) => {
+        setCurrentSelectedItem(item)
+        setVideoPlaying(false)
+        fetchSimilarMovies(item.id)
+        handleClick()
+    }
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" useInPortal={false} sx={{ zIndex: 3000 }}>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" motionPreset="none">
             <ModalOverlay />
-            <ModalContent bgColor="#1a202c">
+            <MotionModalContent
+                as={ModalContent}
+                bgColor="#1a202c"
+                borderRadius="md"
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
                 <ModalCloseButton color="white" />
-                <ModalBody ref={finalRef} p={0} borderRadius="5px">
-                    {videoPlaying && trailerKey ? (
-                        <Box
-                            overflow="hidden"
-                            borderTopRadius="lg"
-                            w="100%"
-                            h="0"
-                            pb="56.25%"
-                            position="relative"
-                        >
+                <ModalBody ref={finalRef} p={0}>
+                    {isLoadingTrailer ? (
+                        <Skeleton height="250px" width="100%" borderTopRadius="lg" />
+                    ) : videoPlaying && trailerKey ? (
+                        <Box overflow="hidden" borderTopRadius="lg" w="100%" h="0" pb="56.25%" position="relative">
                             <Box
                                 as="iframe"
                                 src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
@@ -106,95 +136,101 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                         </Box>
                     ) : (
                         <Image
-                            src={`${import.meta.env.VITE_URL_IMG}${currentSelectedItem.backdrop_path}`}
-                            alt={currentSelectedItem.title}
+                            src={`${import.meta.env.VITE_URL_IMG}${currentSelectedItem?.backdrop_path}`}
+                            alt={currentSelectedItem?.title}
                             w="100%"
                             borderTopRadius="lg"
                         />
                     )}
+
                     <Stack p={5} spacing={4}>
                         <HStack justifyContent="space-between">
-                            <Box>
-                                <ButtonGroup spacing={2}>
-                                    {trailerKey.length > 0 && (
-                                        <Tooltip label="Play" placement="top">
-                                            <Button
-                                                variant="solid"
-                                                colorScheme="teal"
-                                                borderRadius="50%"
-                                                w="40px"
-                                                onClick={() => {
-                                                    setVideoPlaying(true)
-                                                }}
-                                            >
-                                                <i className="fa-solid fa-play" style={{ fontSize: '1.5rem' }}></i>
-                                            </Button>
-                                        </Tooltip>
-                                    )}
-                                    {favoriteListDisabled ? (
-                                        <Tooltip label="Remove from Favorite" placement="top">
-                                            <Button variant="solid" colorScheme='teal' borderRadius="50%" w="40px"
-                                                onClick={() => removeMovieFromFavoriteList(currentSelectedItem.id)}
-                                            >
-                                                <i className="fas fa-heart" style={{ fontSize: '1.5rem' }}></i>
-                                            </Button>
-                                        </Tooltip>
-                                    ) : (
-                                        <Tooltip label="Add to Favorite" placement="top">
-                                            <Button variant="outline" colorScheme="teal" borderRadius="50%" w="40px"
-                                                onClick={() => addMovieToFavoriteList(currentSelectedItem)}
-                                            >
-                                                <i className="far fa-heart" style={{ fontSize: '1.5rem' }}></i>
-                                            </Button>
-                                        </Tooltip>
-                                    )}
-                                </ButtonGroup>
-                            </Box>
-                            {videoPlaying &&
-                                <Box>
-                                    <Button variant="outline" colorScheme="teal" onClick={onClose}>
-                                        Close
-                                    </Button>
-                                </Box>
-                            }
+                            <ButtonGroup spacing={2}>
+                                {!isLoadingTrailer && trailerKey.length > 0 && (
+                                    <Tooltip label="Play" placement="top">
+                                        <Button
+                                            variant="solid"
+                                            colorScheme="teal"
+                                            borderRadius="50%"
+                                            w="40px"
+                                            onClick={() => setVideoPlaying(true)}
+                                        >
+                                            <i className="fa-solid fa-play" style={{ fontSize: '1.5rem' }}></i>
+                                        </Button>
+                                    </Tooltip>
+                                )}
+                                {favoriteListDisabled ? (
+                                    <Tooltip label="Remove from Favorite" placement="top">
+                                        <MotionButton
+                                            variant="solid"
+                                            colorScheme="teal"
+                                            borderRadius="50%"
+                                            w="40px"
+                                            onClick={() => removeMovieFromFavoriteList(currentSelectedItem.id)}
+                                            whileTap={{ scale: 1.2 }}
+                                            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                                        >
+                                            <i className="fas fa-heart" style={{ fontSize: '1.5rem' }}></i>
+                                        </MotionButton>
+                                    </Tooltip>
+                                ) : (
+                                    <Tooltip label="Add to Favorite" placement="top">
+                                        <MotionButton
+                                            variant="outline"
+                                            colorScheme="teal"
+                                            borderRadius="50%"
+                                            w="40px"
+                                            onClick={() => addMovieToFavoriteList(currentSelectedItem)}
+                                            whileTap={{ scale: 1.2 }}
+                                            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                                        >
+                                            <i className="far fa-heart" style={{ fontSize: '1.5rem' }}></i>
+                                        </MotionButton>
+                                    </Tooltip>
+                                )}
+                            </ButtonGroup>
+                            {videoPlaying && (
+                                <Button variant="outline" colorScheme="teal" onClick={onClose}>
+                                    Close
+                                </Button>
+                            )}
                         </HStack>
+
                         <Divider />
-                        <Heading size="md" color="white">{currentSelectedItem.title}</Heading>
-                        <Text color="whiteAlpha.800">{currentSelectedItem.overview}</Text>
-                        {movieSimilar.length > 0 && (
+                        <Heading size="md" color="white">{currentSelectedItem?.title}</Heading>
+                        <Text color="whiteAlpha.800">{currentSelectedItem?.overview}</Text>
+
+                        {isLoadingSimilar ? (
+                            <>
+                                <Divider />
+                                <SkeletonText mt="4" noOfLines={1} width="150px" />
+                                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                                    {Array.from({ length: 3 }).map((_, index) => (
+                                        <Skeleton key={index} height="180px" borderRadius="md" />
+                                    ))}
+                                </Grid>
+                            </>
+                        ) : movieSimilar.length > 0 && (
                             <>
                                 <Divider />
                                 <Heading size="sm" color="white">Similar Movies</Heading>
                                 <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-                                    {movieSimilar.map((item) => (
-                                        item.poster_path && item.backdrop_path && (
-                                            <Image
-                                                key={item.id}
-                                                cursor="pointer"
-                                                objectFit="cover"
-                                                onClick={() => {
-                                                    setCurrentSelectedItem(item)
-                                                    setVideoPlaying(false)
-                                                    fetchSimilarMovies(item.id)
-                                                    handleClick()
-                                                }}
-                                                w="100%"
+                                    {movieSimilar.map((item) => item.poster_path && item.backdrop_path && (
+                                        <Box key={item.id}>
+                                            <MovieCard
                                                 src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                                 alt={item.title}
-                                                borderRadius="md"
-                                                _hover={{
-                                                    transform: 'scale(1.05)'
-                                                }}
-                                                transition="transform 0.2s ease-in-out"
+                                                w="100%"
+                                                onClick={() => handleSelectMovie(item)}
                                             />
-                                        )
+                                        </Box>
                                     ))}
                                 </Grid>
                             </>
                         )}
                     </Stack>
                 </ModalBody>
-            </ModalContent>
+            </MotionModalContent>
         </Modal>
     )
 }
