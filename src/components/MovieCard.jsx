@@ -20,11 +20,11 @@ const MovieCard = ({ src, alt, onClick, width = '180px' }) => {
             borderRadius="md"
             initial={{ scale: 1, rotate: 0 }}
             animate={{
-                scale: isHovered ? 1.1 : 1,
+                scale: isHovered ? 1.05 : 1,
                 rotate: isHovered ? 2 : 0,
                 boxShadow: isHovered
-                    ? '0 12px 24px rgba(0, 0, 0, 0.3)'
-                    : '0 4px 10px rgba(0, 0, 0, 0.15)',
+                    ? '0 4px 10px rgba(0, 0, 0, 0.5)'
+                    : '0 2px 5px rgba(0, 0, 0, 0.15)',
             }}
             transition={{
                 type: 'spring',
