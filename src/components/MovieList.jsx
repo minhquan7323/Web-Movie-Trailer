@@ -1,4 +1,4 @@
-import { Heading, HStack, Image, useDisclosure, VStack } from '@chakra-ui/react'
+import { Box, Heading, HStack, Image, useDisclosure, VStack } from '@chakra-ui/react'
 import React, { useContext, useState } from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
@@ -41,29 +41,31 @@ const MovieList = ({ title, data }) => {
             <Heading size="lg" paddingLeft="10px">
                 {title}
             </Heading>
-            <Carousel responsive={responsive} infinite arrows centerMode={false} partialVisible draggable={false}>
-                {data.length > 0 &&
-                    data.map((item) => (
-                        item.poster_path && item.backdrop_path && (
-                            <HStack key={item.id} alignItems="center" justify="center" p={2}>
-                                <Image
-                                    cursor="pointer"
-                                    objectFit="cover"
-                                    onClick={() => handleSelectMovie(item)}
-                                    w="180px"
-                                    src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
-                                    alt={item.title}
-                                    borderRadius="md"
-                                    _hover={{
-                                        transform: 'scale(1.05)'
-                                    }}
-                                    transition="transform 0.2s ease-in-out"
-                                />
-                            </HStack>
-                        )
-                    ))
-                }
-            </Carousel>
+            <Box overflow="hidden" width="100%">
+                <Carousel responsive={responsive} infinite arrows centerMode={false} partialVisible draggable={false}>
+                    {data.length > 0 &&
+                        data.map((item) => (
+                            item.poster_path && item.backdrop_path && (
+                                <HStack key={item.id} alignItems="center" justify="center" p={2}>
+                                    <Image
+                                        cursor="pointer"
+                                        objectFit="cover"
+                                        onClick={() => handleSelectMovie(item)}
+                                        w="180px"
+                                        src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
+                                        alt={item.title}
+                                        borderRadius="md"
+                                        _hover={{
+                                            transform: 'scale(1.05)'
+                                        }}
+                                        transition="transform 0.2s ease-in-out"
+                                    />
+                                </HStack>
+                            )
+                        ))
+                    }
+                </Carousel>
+            </Box>
 
             {selectedItem && (
                 <MovieModal

@@ -71,7 +71,15 @@ const Home = () => {
                         Genre
                     </MenuButton>
                     <MenuList color="black" zIndex="1001">
-                        <Grid templateColumns="repeat(4, 1fr)">
+                        <Grid
+                            templateColumns={{
+                                base: 'repeat(2, 1fr)',
+                                sm: 'repeat(3, 1fr)',
+                                md: 'repeat(4, 1fr)',
+                                lg: 'repeat(5, 1fr)',
+                            }}
+                            gap={2}
+                        >
                             {genres.map((genre) => (
                                 <MenuItem key={genre.id} onClick={() => handleClickGenre(genre.name)}>
                                     {genre.name}
