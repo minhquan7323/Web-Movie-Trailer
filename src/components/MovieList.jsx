@@ -54,6 +54,7 @@ const MovieList = ({ title, data }) => {
                             item.poster_path && item.backdrop_path && (
                                 <HStack key={item.id} alignItems="center" justify="center" p={2} py={5}>
                                     <MovieCard
+                                        vote_average={item.vote_average}
                                         src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                         alt={item.title}
                                         onClick={() => handleSelectMovie(item)}

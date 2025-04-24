@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import axios from 'axios'
 import { GlobalContext } from '../context/GlobalProvider'
 import MovieCard from './MovieCard'
+import responsive from '../constants/responsive'
 
 const MotionModalContent = motion(Box)
 const MotionButton = motion(Button)
@@ -100,7 +101,7 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl" motionPreset="none">
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="2xl" motionPreset="none">
             <ModalOverlay />
             <MotionModalContent
                 as={ModalContent}
@@ -199,7 +200,7 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                             <>
                                 <Divider />
                                 <SkeletonText mt="4" noOfLines={1} width="150px" />
-                                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                                <Grid templateColumns={responsive.grid23} gap={4}>
                                     {Array.from({ length: 18 }).map((_, index) => (
                                         <Skeleton key={index} height="250px" borderRadius="md" />
                                     ))}
@@ -209,13 +210,14 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                             <>
                                 <Divider />
                                 <Heading size="sm" color="white">Similar Movies</Heading>
-                                <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                                <Grid templateColumns={responsive.grid23} gap={4}>
                                     {movieSimilar.map((item) => item.poster_path && item.backdrop_path && (
                                         <Box key={item.id}>
                                             <MovieCard
+                                                vote_average={item.vote_average}
                                                 src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                                 alt={item.title}
-                                                w="100%"
+                                                width="100%"
                                                 onClick={() => handleSelectMovie(item)}
                                             />
                                         </Box>

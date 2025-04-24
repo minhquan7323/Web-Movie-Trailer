@@ -45,6 +45,7 @@ const MovieGenre = () => {
                                         <HStack key={item.id} alignItems="center" justify="center" p={2}>
                                             <Skeleton isLoaded={item.poster_path} width="180px" height="270px">
                                                 <MovieCard
+                                                    vote_average={item.vote_average}
                                                     src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                                     alt={item.title}
                                                     onClick={() => handleSelectMovie(item)}

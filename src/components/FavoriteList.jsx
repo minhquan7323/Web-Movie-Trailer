@@ -24,17 +24,18 @@ const FavoriteList = () => {
                 </Heading>
 
                 {isLoading ? (
-                    <Grid templateColumns={responsive.grid346} gap={4} mt={4} >
+                    <Grid templateColumns={responsive.grid346} mt={4} >
                         {Array.from({ length: 12 }).map((_, index) => (
                             <Skeleton key={index} height="270px" width="180px" borderRadius="md" />
                         ))}
                     </Grid>
                 ) : favoriteList.length > 0 ? (
-                    <Grid templateColumns={responsive.grid346} gap={4} >
+                    <Grid templateColumns={responsive.grid346}>
                         {favoriteList.map((item) => (
                             item.poster_path && item.backdrop_path && (
                                 <HStack key={item.id} alignItems="center" justify="center" p={2}>
                                     <MovieCard
+                                        vote_average={item.vote_average}
                                         src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                         alt={item.title}
                                         onClick={() => handleSelectMovie(item)}

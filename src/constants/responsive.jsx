@@ -7,9 +7,15 @@ const responsive = {
         xl: "repeat(6, 1fr)"
     },
     grid346: {
-        base: "repeat(3, 1fr)",
+        base: "repeat(2, 1fr)",
+        sm: "repeat(3, 1fr)",
         md: "repeat(4, 1fr)",
-        lg: "repeat(6, 1fr)"
+        lg: "repeat(5, 1fr)",
+        xl: "repeat(6, 1fr)"
+    },
+    grid23: {
+        base: "repeat(2, 1fr)",
+        md: "repeat(3, 1fr)"
     },
     grid2to5: {
         base: 'repeat(2, 1fr)',

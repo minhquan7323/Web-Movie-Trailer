@@ -62,13 +62,12 @@ const MovieSearch = () => {
                     ))}
                 </Grid>
             ) : movieSearch.length > 0 ? (
-                <Grid
-                    templateColumns={responsive.grid346}
-                >
+                <Grid templateColumns={responsive.grid346} >
                     {movieSearch.map((item) => (
                         item.poster_path && item.backdrop_path && (
                             <HStack key={item.id} alignItems="center" justify="center" p={2}>
                                 <MovieCard
+                                    vote_average={item.vote_average}
                                     src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                     alt={item.title}
                                     onClick={() => handleSelectMovie(item)}
