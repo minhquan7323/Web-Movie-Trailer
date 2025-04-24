@@ -57,7 +57,7 @@ const MovieSearch = () => {
                 >
                     {[...Array(12)].map((_, index) => (
                         <HStack key={index} alignItems="center" justify="center" p={2}>
-                            <Skeleton height="300px" width="180px" borderRadius="md" />
+                            <Skeleton height="250px" width="170px" borderRadius="md" />
                         </HStack>
                     ))}
                 </Grid>
