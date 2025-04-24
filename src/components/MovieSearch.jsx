@@ -63,7 +63,7 @@ const MovieSearch = () => {
                 </Grid>
             ) : movieSearch.length > 0 ? (
                 <Grid
-                    templateColumns={responsive}
+                    templateColumns={responsive.grid346}
                 >
                     {movieSearch.map((item) => (
                         item.poster_path && item.backdrop_path && (
