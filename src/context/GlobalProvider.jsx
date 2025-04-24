@@ -14,8 +14,8 @@ export const GlobalProvider = props => {
         localStorage.setItem('favoriteList', JSON.stringify(state.favoriteList))
     }, [state])
 
-    const addMovieToFavoriteList = (movie) => {
-        dispatch({ type: 'addMovieToFavoriteList', payload: movie })
+    const addMovieToFavoriteList = (id) => {
+        dispatch({ type: 'addMovieToFavoriteList', payload: id })
     }
     const removeMovieFromFavoriteList = (id) => {
         dispatch({ type: 'removeMovieFromFavoriteList', payload: id })

@@ -3,6 +3,7 @@ import { GlobalContext } from '../context/GlobalProvider'
 import { Box, Grid, Heading, HStack, Skeleton, useDisclosure, VStack } from '@chakra-ui/react'
 import MovieModal from './MovieModal'
 import MovieCard from './MovieCard'
+import responsive from '../constants/responsive'
 
 const FavoriteList = () => {
     const { favoriteList } = useContext(GlobalContext)
@@ -23,28 +24,13 @@ const FavoriteList = () => {
                 </Heading>
 
                 {isLoading ? (
-                    <Grid
-                        templateColumns={{
-                            base: "repeat(3, 1fr)",
-                            md: "repeat(4, 1fr)",
-                            lg: "repeat(6, 1fr)"
-                        }}
-                        gap={4}
-                        mt={4}
-                    >
+                    <Grid templateColumns={responsive.grid346} gap={4} mt={4} >
                         {Array.from({ length: 12 }).map((_, index) => (
                             <Skeleton key={index} height="270px" width="180px" borderRadius="md" />
                         ))}
                     </Grid>
                 ) : favoriteList.length > 0 ? (
-                    <Grid
-                        templateColumns={{
-                            base: "repeat(3, 1fr)",
-                            md: "repeat(4, 1fr)",
-                            lg: "repeat(6, 1fr)"
-                        }}
-                        gap={4}
-                    >
+                    <Grid templateColumns={responsive.grid346} gap={4} >
                         {favoriteList.map((item) => (
                             item.poster_path && item.backdrop_path && (
                                 <HStack key={item.id} alignItems="center" justify="center" p={2}>

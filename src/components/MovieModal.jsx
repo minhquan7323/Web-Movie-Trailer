@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import {
-    Box, Button, ButtonGroup, Divider, Grid, Heading, HStack, Image, Modal,
-    ModalBody, ModalCloseButton, ModalOverlay, Stack, Text, Tooltip,
-    Skeleton, SkeletonText,
-    ModalContent
-} from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Divider, Grid, Heading, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalOverlay, Stack, Text, Tooltip, Skeleton, SkeletonText, ModalContent } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import axios from 'axios'
 import { GlobalContext } from '../context/GlobalProvider'
@@ -119,7 +114,7 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                 <ModalCloseButton color="white" />
                 <ModalBody ref={finalRef} p={0}>
                     {isLoadingTrailer ? (
-                        <Skeleton height="250px" width="100%" borderTopRadius="lg" />
+                        <Skeleton height="350px" width="100%" borderTopRadius="lg" />
                     ) : videoPlaying && trailerKey ? (
                         <Box overflow="hidden" borderTopRadius="lg" w="100%" h="0" pb="56.25%" position="relative">
                             <Box
@@ -205,8 +200,8 @@ const MovieModal = ({ isOpen, onClose, selectedItem: initialSelectedItem, finalR
                                 <Divider />
                                 <SkeletonText mt="4" noOfLines={1} width="150px" />
                                 <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-                                    {Array.from({ length: 3 }).map((_, index) => (
-                                        <Skeleton key={index} height="180px" borderRadius="md" />
+                                    {Array.from({ length: 18 }).map((_, index) => (
+                                        <Skeleton key={index} height="250px" borderRadius="md" />
                                     ))}
                                 </Grid>
                             </>

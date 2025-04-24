@@ -5,13 +5,7 @@ import 'react-multi-carousel/lib/styles.css'
 import MovieModal from './MovieModal'
 import MovieCard from './MovieCard'
 import { motion } from 'framer-motion'
-
-const responsive = {
-    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 7, partialVisibilityGutter: 40 },
-    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 6, partialVisibilityGutter: 40 },
-    tablet: { breakpoint: { max: 1024, min: 568 }, items: 4, partialVisibilityGutter: 30 },
-    mobile: { breakpoint: { max: 568, min: 0 }, items: 2, partialVisibilityGutter: 30 }
-}
+import responsive from '../constants/responsive'
 
 const MovieList = ({ title, data }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -43,7 +37,7 @@ const MovieList = ({ title, data }) => {
             </Heading>
             <Box overflow="hidden" width="100%">
                 <Carousel
-                    responsive={responsive}
+                    responsive={responsive.carouselList}
                     infinite
                     arrows
                     centerMode={false}

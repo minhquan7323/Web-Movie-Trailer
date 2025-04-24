@@ -1,26 +1,9 @@
 import React, { useState } from 'react'
-import {
-    Box,
-    Button,
-    Heading,
-    HStack,
-    Image,
-    Skeleton,
-    SkeletonText,
-    Text,
-    VStack,
-    useDisclosure
-} from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Image, Skeleton, SkeletonText, Text, VStack, useDisclosure } from '@chakra-ui/react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import MovieModal from './MovieModal'
-
-const responsive = {
-    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 1 },
-    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 1 },
-    tablet: { breakpoint: { max: 1024, min: 568 }, items: 1 },
-    mobile: { breakpoint: { max: 568, min: 0 }, items: 1 }
-}
+import responsive from '../constants/responsive'
 
 const Banner = ({ data }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -38,7 +21,7 @@ const Banner = ({ data }) => {
         <>
             <Box overflow="hidden" width="100%">
                 <Carousel
-                    responsive={responsive}
+                    responsive={responsive.carouselResponsive}
                     infinite
                     arrows={false}
                     partialVisible

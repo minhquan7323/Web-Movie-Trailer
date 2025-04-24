@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import MovieModal from './MovieModal'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import MovieCard from './MovieCard'
+import GenreMenu from './ButtonGenreMenu'
+import responsive from '../constants/responsive'
 
 const MovieGenre = () => {
     const location = useLocation()
@@ -26,23 +28,7 @@ const MovieGenre = () => {
     }
     return (
         <Box pt='70px'>
-            <Box p={5} display={'flex'} justifyContent={'right'} alignItems='end'>
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Genre
-                    </MenuButton>
-                    <MenuList color={'black'} zIndex='1001'>
-                        <Grid templateColumns={'repeat(4, 1fr)'} >
-                            {genres.map((genre) => (
-                                <MenuItem key={genre.id} onClick={() => handleClickGenre(genre.name)}>
-                                    {genre.name}
-                                </MenuItem>
-                            ))}
-                        </Grid>
-                    </MenuList>
-                </Menu>
-            </Box>
-
+            <GenreMenu genres={genres} handleClickGenre={handleClickGenre} />
             {selectedGenre && (
                 <>
                     <Skeleton isLoaded={selectedGenre} height="50px" width="200px" mb={4}>
@@ -53,13 +39,7 @@ const MovieGenre = () => {
 
                     <VStack ref={genreRef} display="flex" alignItems="left" justifyContent="space-between" p="10px">
                         {filteredMovies.length > 0 ? (
-                            <Grid
-                                templateColumns={{
-                                    base: "repeat(3, 1fr)",
-                                    md: "repeat(4, 1fr)",
-                                    lg: "repeat(6, 1fr)"
-                                }}
-                            >
+                            <Grid templateColumns={responsive.grid2to6} >
                                 {filteredMovies.map((item) => (
                                     item.poster_path && item.backdrop_path && (
                                         <HStack key={item.id} alignItems="center" justify="center" p={2}>

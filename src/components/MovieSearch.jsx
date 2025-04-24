@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { Grid, Heading, HStack, Text, useDisclosure, VStack, Skeleton } from '@chakra-ui/react'
 import MovieModal from './MovieModal'
 import MovieCard from './MovieCard'
+import responsive from '../constants/responsive'
 
 const MovieSearch = () => {
     const location = useLocation()
@@ -51,11 +52,7 @@ const MovieSearch = () => {
             </Heading>
             {isLoading ? (
                 <Grid
-                    templateColumns={{
-                        base: "repeat(3, 1fr)",
-                        md: "repeat(4, 1fr)",
-                        lg: "repeat(6, 1fr)"
-                    }}
+                    templateColumns={responsive.grid346}
                     gap={6}
                 >
                     {[...Array(12)].map((_, index) => (
@@ -66,11 +63,7 @@ const MovieSearch = () => {
                 </Grid>
             ) : movieSearch.length > 0 ? (
                 <Grid
-                    templateColumns={{
-                        base: "repeat(3, 1fr)",
-                        md: "repeat(4, 1fr)",
-                        lg: "repeat(6, 1fr)"
-                    }}
+                    templateColumns={responsive}
                 >
                     {movieSearch.map((item) => (
                         item.poster_path && item.backdrop_path && (
