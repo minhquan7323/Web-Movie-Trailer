@@ -70,6 +70,7 @@ const MovieSearch = () => {
                                     vote_average={item.vote_average}
                                     src={`${import.meta.env.VITE_URL_IMG}${item.poster_path}`}
                                     alt={item.title}
+                                    width="100%"
                                     onClick={() => handleSelectMovie(item)}
                                 />
                             </HStack>
